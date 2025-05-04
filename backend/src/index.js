@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import { dbConnect } from "./configs/dbConnect.js";
 import authRoutes from "./routes/authRoutes.js"
 import userRoutes from "./routes/userRoutes.js"
+import eventRoutes from "./routes/eventRoutes.js"
 dotenv.config();
 
 dbConnect();
@@ -15,6 +16,7 @@ app.use(express.json());
 //Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/events",eventRoutes);
 
 
 // Start the server
