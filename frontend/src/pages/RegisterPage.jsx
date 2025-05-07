@@ -1,22 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const RegisterPage = () => {
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: "Student",
+    role: "student",
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    try {
+      const response = await axios.post("/api/auth/register", form);
+      console.log("User registered successfully:", response.data);
+      // Optional: Redirect user or show success message
+    } catch (error) {
+      console.error("Registration failed:", error.response?.data || error.message);
+      // Optional: Show error to user
+    }
     // Add backend integration logic here
-    console.log("Registering user:", form);
+    // console.log("Registering user:", form);
   };
 
   return (
@@ -73,9 +83,9 @@ const RegisterPage = () => {
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="Student">Student</option>
-              <option value="Coordinator">Coordinator</option>
-              <option value="Admin">Admin</option>
+              <option value="student">student</option>
+              <option value="coordinator">coordinator</option>
+              <option value="admin">admin</option>
             </select>
           </div>
 
