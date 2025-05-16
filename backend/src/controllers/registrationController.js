@@ -33,6 +33,33 @@ export const registerForEvent = async (req, res) => {
     res.status(500).json({ message: "Failed to register", error: error.message });
   }
 };
+export const registerForEvents = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const eventId = req.params.eventId;
+
+    // Check if already registered
+    const alreadyRegistered = await Registration.findOne({
+      user: userId,
+      event: eventId,
+    });
+
+    if (alreadyRegistered) {
+      return res.status(400).json({ error: "Already registered for this event." });
+    }
+
+    const registration = new Registration({
+      user: userId,
+      event: eventId,
+    });
+
+    await registration.save();
+
+    res.status(201).json({ message: "Successfully registered for the event." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to register", message: error.message });
+  }
+};
 
 // @desc Get all events user registered for
 export const getMyRegistrations = async (req, res) => {

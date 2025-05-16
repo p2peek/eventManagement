@@ -24,9 +24,10 @@ const LoginPage = () => {
       const response = await axios.post("/api/auth/login", form);
       const { token, user } = response.data;
 
-      // Save token and user in localStorage or context
+      // Save token, user, and role separately in localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("role", user.role);  // <-- Added this line
 
       console.log("Login successful:", user);
 
