@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 
 const analytics = [
   { title: "Events Managed", value: 5, icon: "📅", color: "bg-indigo-500" },
@@ -13,6 +14,16 @@ const yourEvents = [
 ];
 
 const CoordinatorDashboard = () => {
+
+  const [userName, setUserName] = useState(null);
+    useEffect(() => {
+      const storedUser = localStorage.getItem("user");
+      if(storedUser){
+        const user = JSON.parse(storedUser);
+        setUserName(user.name)
+      }
+    }, []);
+
   return (
     <div className="flex min-h-screen bg-gray-100">
 
@@ -28,6 +39,13 @@ const CoordinatorDashboard = () => {
           <a href="#" className="text-gray-700 hover:text-indigo-600">Tasks</a>
           <a href="#" className="text-gray-700 hover:text-red-500">Logout</a>
         </nav>
+
+        {/* User Info at Bottom */}
+        <div className="mt-auto p-4 border-t flex items-center space-x-3">
+          <div className="text-2xl">👤</div>
+          <div className="text-gray-800 font-medium">Admin User {userName}</div>
+        </div>
+
       </aside>
 
       {/* Main Content */}
