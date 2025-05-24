@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 const analytics = [
   { title: "Total Events", value: 20, icon: "🎯", color: "bg-blue-500" },
@@ -13,6 +16,47 @@ const registeredEvents = [
 ];
 
 const StudentDashboard = () => {
+
+  const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+    const fetchRegisteredEvents = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+  
+      try {
+        const res = await axios.get("/api/registration/my-registrations", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        // `res.data` will be an array of registrations with populated event objects
+        const registeredEvents = res.data.map(reg => reg.event);
+        setEvents(registeredEvents);
+      } catch (error) {
+        console.error("Error fetching registered events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchRegisteredEvents();
+  }, []);
+  
+    // ✅ New: handle register logic
+    const handleRegisterClick = (eventId) => {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        alert("You must be logged in to register for an event.");
+        navigate("/login");
+      } else {
+        navigate(`/register/${eventId}`);
+      }
+    };
 
   const [userName, setUserName] = useState(null);
     useEffect(() => {
@@ -42,7 +86,7 @@ const StudentDashboard = () => {
         {/* User Info at Bottom */}
         <div className="mt-auto p-4 border-t flex items-center space-x-3">
           <div className="text-2xl">👤</div>
-          <div className="text-gray-800 font-medium">Student User {userName}</div>
+          <div className="text-gray-800 font-medium">Student - {userName}</div>
         </div>
 
       </aside>
@@ -85,6 +129,44 @@ const StudentDashboard = () => {
               </tbody>
             </table>
           </div>
+        </div>
+        {/* List My Registration */}
+        <br />
+        <br />
+        <div className="bg-white rounded-lg shadow-md p-6">
+          <section className="flex flex-col items-center justify-center flex-grow px-4 py-16 bg-blue-50">
+        <h2 className="text-3xl font-bold text-gray-800 mb-12">My Registrations</h2>
+
+        {loading ? (
+          <p className="text-gray-600">Loading events...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+            {events.map((event) => (
+              <div key={event._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition">
+                <img
+                  src={event.imageUrl}
+                  alt={event.title}
+                  className="h-48 w-full object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-blue-600 mb-2">{event.title}</h3>
+                  <p className="text-gray-600 text-sm mb-1"><strong>Date:</strong> {new Date(event.date).toDateString()}</p>
+                  <p className="text-gray-600 text-sm mb-3"><strong>Location:</strong> {event.venue}</p>
+                  <p className="text-gray-700 text-base mb-4">{event.description}</p>
+                  
+                  {/* ✅ Button with click handler */}
+                  <button
+                    onClick={() => handleRegisterClick(event._id)}
+                    className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                  >
+                    Register
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
         </div>
 
       </main>
