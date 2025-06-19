@@ -27,7 +27,7 @@ const LoginPage = () => {
       // Save token, user, and role separately in localStorage
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("role", user.role);  // <-- Added this line
+      localStorage.setItem("role", user.role);
 
       console.log("Login successful:", user);
 
@@ -66,7 +66,7 @@ const LoginPage = () => {
               value={form.email}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -78,7 +78,7 @@ const LoginPage = () => {
               value={form.password}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -88,7 +88,7 @@ const LoginPage = () => {
               name="role"
               value={form.role}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 rounded-md px-4 py-2 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="student">Student</option>
               <option value="coordinator">Coordinator</option>

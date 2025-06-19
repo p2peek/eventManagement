@@ -14,6 +14,8 @@ import StudentDashboard from './pages/StudentDashboard.jsx';
 import UnauthorizedPage from './pages/UnauthorizedPage.jsx';
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import RegisterEventPage from './pages/RegisterEventPage.jsx';
+import EditEventPage from './Components/EditEventPage.jsx';
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +31,7 @@ const router = createBrowserRouter(
       {/* Admin Protected Routes */}
       <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
         <Route path='admin-dashboard' element={<AdminDashboard />} />
+        <Route path='admin/edit-event/:id' element={<EditEventPage />} />
       </Route>
 
       {/* Coordinator Protected Routes */}

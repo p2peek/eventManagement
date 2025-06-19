@@ -1,6 +1,7 @@
 import express from "express"
 import verifyToken from "../middlewares/authMiddleware.js";
 import authorizeRoles from "../middlewares/roleMiddleware.js";
+import { getAllUsers, updateUserRole, getAllCoordinators } from "../controllers/userController.js";
 
 
 const router = express.Router();
@@ -20,5 +21,10 @@ router.get("/coordinator",verifyToken,authorizeRoles("admin","coordinator"), (re
 router.get("/student",verifyToken,verifyToken,authorizeRoles("admin","coordinator","student"), (req,res) => {
     res.json({message:"Welcome Student"});
 });
+
+router.get("/all-users", verifyToken, authorizeRoles("admin"), getAllUsers);
+router.get("/coordinators", verifyToken, authorizeRoles("admin"), getAllCoordinators);
+
+router.patch("/update-role/:id", verifyToken, authorizeRoles("admin"), updateUserRole);
 
 export default router

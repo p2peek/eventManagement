@@ -99,3 +99,54 @@ export const listEvents = async (req, res) => {
       });
     }
   };
+
+export const assignCoordinator = async (req, res) => {
+  const { eventId } = req.params;
+  const { coordinatorId } = req.body;
+
+  try {
+    // Validate coordinator
+    const coordinator = await User.findById(coordinatorId);
+    if (!coordinator || coordinator.role !== "coordinator") {
+      return res.status(400).json({ message: "Invalid coordinator ID or role" });
+    }
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    // Prevent duplicates
+    if (event.coordinators.includes(coordinatorId)) {
+      return res.status(400).json({ message: "Coordinator already assigned" });
+    }
+
+    event.coordinators.push(coordinatorId);
+    await event.save();
+
+    res.status(200).json({ message: "Coordinator added successfully", event });
+  } catch (err) {
+    console.error("Error assigning coordinator:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const removeCoordinator = async (req, res) => {
+  const { eventId } = req.params;
+  const { coordinatorId } = req.body;
+
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) return res.status(404).json({ message: "Event not found" });
+
+    event.coordinators = event.coordinators.filter(
+      (id) => id.toString() !== coordinatorId
+    );
+    await event.save();
+
+    res.status(200).json({ message: "Coordinator removed successfully", event });
+  } catch (error) {
+    res.status(500).json({ message: "Error removing coordinator", error });
+  }
+};
+
