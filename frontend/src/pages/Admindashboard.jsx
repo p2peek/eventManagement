@@ -5,6 +5,7 @@ import MyRegistrations from "../Components/MyRegistrations";
 import CreateEventForm from "../Components/CreateEventForm";
 import UserManagement from "../Components/UserManagement";
 import ManageEvents from "../Components/ManageEvent";
+import RecentEventsTable from "../Components/RecentEvent";
 
 
 
@@ -143,45 +144,13 @@ const AdminDashboard = () => {
               ))}
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Recent Events</h2>
-              <div className="overflow-x-auto">
-                <table className="min-w-full">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Event
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Participants
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {recentEvents.map((event) => (
-                      <tr key={event.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{event.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{event.date}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{event.participants}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <RecentEventsTable />
           </>
         )}
 
         {activeTab === "registrations" && (
           <MyRegistrations events={events} loading={loading} />
         )}
-
-        {/* {activeTab === "manage" && (
-          <p className="text-xl text-gray-700">Manage Events section coming soon...</p>
-        )} */}
 
         {activeTab === "manage" && <ManageEvents />}
 

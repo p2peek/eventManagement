@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MyRegistrations from "../Components/MyRegistrations";
+import RecentEventsTable from "../Components/RecentEvent";
+
 
 const analytics = [
   { title: "Events Managed", value: 5, icon: "📅", color: "bg-indigo-500" },
@@ -133,36 +135,7 @@ const CoordinatorDashboard = () => {
                 </div>
               ))}
             </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">My Events</h2>
-              <div className="overflow-x-auto">
-                <table className="min-w-full">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Event Name
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Registrations
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {yourEvents.map((event) => (
-                      <tr key={event.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{event.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{event.date}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{event.registered}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <RecentEventsTable />
           </>
         )}
 
